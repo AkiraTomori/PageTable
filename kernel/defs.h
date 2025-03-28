@@ -173,6 +173,8 @@ uint64          walkaddr(pagetable_t, uint64);
 int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
+void            vmprint(pagetable_t); /**< Đã định nghĩa cho bài số 2 (tất nhiên có thể làm theo ý mình) */
+void            _vmprint(pagetable_t, int); /**<Hàm đệ quy cho vmprint */
 
 // plic.c
 void            plicinit(void);
