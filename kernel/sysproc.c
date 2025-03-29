@@ -18,8 +18,7 @@ sys_exit(void)
 uint64
 sys_getpid(void)
 {
-  struct proc *p = myproc();
-  return p->usys->pid;
+  return myproc()->pid;
 }
 
 uint64
