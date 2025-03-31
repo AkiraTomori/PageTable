@@ -449,3 +449,28 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+
+void vmprint_recursive(pagetable_t pagetable, int depth) {
+  for(int i = 0; i < 512; i++){
+    pte_t pte = pagetable[i];
+    if(!(pte & PTE_V))
+      continue;
+
+    // In ra dấu phân cấp
+    for (int j = 0; j < depth; j++) {
+      printf(" ..");
+    }
+    printf("%d: pte %p pa %p\n", i, (void*)pte, (void*)PTE2PA(pte));
+
+    // Nếu đây là một bảng trang con (không phải trang lá)
+    if((pte & (PTE_R|PTE_W|PTE_X)) == 0) {
+      pagetable_t child = (pagetable_t)PTE2PA(pte);
+      vmprint_recursive(child, depth+1);
+    }
+  }
+}
+
+void vmprint(pagetable_t pagetable) {
+  printf("page table %p\n", (void*)pagetable);
+  vmprint_recursive(pagetable, 1);
+}
